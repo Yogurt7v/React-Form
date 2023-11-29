@@ -41,11 +41,11 @@ button {
   width: 100%;
   margin-top: 24px;
   color: #666a7b;
-  font-weight: bold;
+  font-weight: 500px;
+  letter-spacing: 3px;
   box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  font-weight: 600;
 
   &:hover {
     box-shadow: -2px -2px 5px #fff, 2px 2px 5px #babecc;
