@@ -12,12 +12,61 @@ export default function Form() {
   const [passwordError, setPasswordError] = useState(null);
 
   const [checkPassword, setCheckPassword] = useState("");
+  const [checkPasswordError, setCheckPasswordError] = useState(null);
+
+  const onEmailChange = ({ target }) => {
+    setEmail(target.value);
+
+    let newError = null;
+
+    if (
+      !/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g.test(target.value)
+    ) {
+      newError = "Допустимы только латинские буквы, @ и домен.";
+    } else if (target.value.length >= 30) {
+      newError = "Неверный логин. Должно быть не больше 30 символов";
+    }
+    setEmailError(newError);
+  };
+
+  const onEmailBlur = ({ target }) => {
+    if (target.value.length < 5) {
+      setEmailError(null);
+    }
+  };
+
+  const onPasswordChange = ({ target }) => {
+    setPassword(target.value);
+    console.log(target.value);
+    let newError = null;
+
+    if (!/([a-zA-Z0-9._-])/g.test(target.value)) {
+      newError = "Допустимы только латинские буквы и цифры.";
+    } else if (target.value.length >= 30 && target.value.length <= 8) {
+      newError = "Пароль должен быть больше 8, но меньше 30 символов";
+    }
+
+    setPasswordError(newError);
+  };
+  const onPasswordBlur = ({ target }) => {
+    if (target.value.length === 0) {
+      setPasswordError(null);
+    }
+  };
+
+  const onCheckPasswordChange = ({ target }) => {
+    setCheckPassword(target.value);
+    if (password !== target.value && password !== "" && target.value !== "") {
+      setCheckPasswordError("Пароли не совпадают");
+    } else {
+      setCheckPasswordError(null);
+    }
+  };
 
   const getState = () => {
     return {
       email,
       password,
-      checkPassword,
     };
   };
 
@@ -28,33 +77,54 @@ export default function Form() {
 
   return (
     <>
-      <form>
+      <form onSubmit={onSubmit}>
         <label>
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={({ target }) => setEmail(target.value)}
+            onChange={onEmailChange}
+            onBlur={onEmailBlur}
           />
+          {emailErorr && <div className={style.errorLabel}>{emailErorr}</div>}
         </label>
         <label>
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={onPasswordChange}
+            onBlur={onPasswordBlur}
           />
+          {passwordError && (
+            <div className={style.errorLabel}>{passwordError}</div>
+          )}
         </label>
         <label>
           <input
             type="password"
             placeholder="Check password"
             value={checkPassword}
-            onChange={({ target }) => setCheckPassword(target.value)}
+            onChange={onCheckPasswordChange}
           />
         </label>
+        <div className={style.errorLabel}>{checkPasswordError}</div>
 
-        <button onClick={onSubmit}>Зарегистрироваться</button>
+        <button
+          onClick={onSubmit}
+          disabled={
+            !!(
+              emailErorr ||
+              passwordError ||
+              checkPasswordError ||
+              !email ||
+              !password ||
+              !checkPassword
+            )
+          }
+        >
+          Зарегистрироваться
+        </button>
       </form>
     </>
   );

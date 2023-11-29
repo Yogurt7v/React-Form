@@ -31,6 +31,7 @@ input {
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   appearance: none;
+  text-align: center;
 
   &:focus {
     box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
@@ -49,9 +50,23 @@ button {
 
   &:hover {
     box-shadow: -2px -2px 5px #fff, 2px 2px 5px #babecc;
+    color: green;
   }
 
   &:active {
     box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
   }
+  &:disabled {
+    color: red;
+    cursor: not-allowed;
+  }
+}
+
+.errorLabel {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 10px;
+  color: red;
 }
