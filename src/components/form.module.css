@@ -60,6 +60,9 @@ button {
     color: red;
     cursor: not-allowed;
   }
+  &:focus {
+    border: 3px solid green;
+  }
 }
 
 .errorLabel {

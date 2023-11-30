@@ -54,15 +54,17 @@ export default function Form() {
   };
 
   const onCheckPasswordChange = ({ target }) => {
-    let newError = null;
     setCheckPassword(target.value);
     if (password !== target.value && password !== "" && target.value !== "") {
-      newError = "Пароли не совпадают";
+      setCheckPasswordError("Пароли не совпадают");
     } else {
       setCheckPasswordError(null);
     }
-    setCheckPasswordError(newError);
-    result();
+
+    if (target.value === password) {
+      console.log("Пароли совпадают");
+      submitButtonRef.current.focus();
+    }
   };
 
   const getState = () => {
@@ -70,12 +72,6 @@ export default function Form() {
       email,
       password,
     };
-  };
-  const result = () => {
-    if (email && password && checkPasswordError != null) {
-      console.log("FOCUS");
-      submitButtonRef.current.focus();
-    }
   };
 
   const onSubmit = (event) => {
