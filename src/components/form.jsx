@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import style from "./form.module.css";
 
 const sendFormToConsole = (formData) => {
@@ -6,13 +6,15 @@ const sendFormToConsole = (formData) => {
 };
 export default function Form() {
   const [email, setEmail] = useState("");
-  const [emailErorr, setEmailError] = useState(null);
+  let [emailErorr, setEmailError] = useState(null);
 
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(null);
+  let [passwordError, setPasswordError] = useState(null);
 
   const [checkPassword, setCheckPassword] = useState("");
-  const [checkPasswordError, setCheckPasswordError] = useState(null);
+  let [checkPasswordError, setCheckPasswordError] = useState(null);
+
+  const submitButtonRef = useRef(null);
 
   const onEmailChange = ({ target }) => {
     setEmail(target.value);
@@ -23,8 +25,8 @@ export default function Form() {
       !/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g.test(target.value)
     ) {
       newError = "Допустимы только латинские буквы, @ и домен.";
-    } else if (target.value.length >= 30) {
-      newError = "Неверный логин. Должно быть не больше 30 символов";
+      // } else if (target.value.length >= 30) {
+      //   newError = "Неверный логин. Должно быть не больше 30 символов";
     }
     setEmailError(newError);
   };
@@ -37,17 +39,16 @@ export default function Form() {
 
   const onPasswordChange = ({ target }) => {
     setPassword(target.value);
-    console.log(target.value);
     let newError = null;
 
     if (!/([a-zA-Z0-9._-])/g.test(target.value)) {
       newError = "Допустимы только латинские буквы и цифры.";
-    } else if (target.value.length >= 30 && target.value.length <= 8) {
+    } else if (target.value.length >= 30 || target.value.length < 8) {
       newError = "Пароль должен быть больше 8, но меньше 30 символов";
     }
-
     setPasswordError(newError);
   };
+
   const onPasswordBlur = ({ target }) => {
     if (target.value.length === 0) {
       setPasswordError(null);
@@ -55,13 +56,27 @@ export default function Form() {
   };
 
   const onCheckPasswordChange = ({ target }) => {
+    let newError = null;
     setCheckPassword(target.value);
     if (password !== target.value && password !== "" && target.value !== "") {
-      setCheckPasswordError("Пароли не совпадают");
+      newError = "Пароли не совпадают";
     } else {
       setCheckPasswordError(null);
     }
+    // onButton();
+    setCheckPasswordError(newError);
+    submitButtonRef.current.focus();
   };
+
+  // const onButton = () => {
+  //   if (
+  //     (emailErorr = null) &&
+  //     (passwordError = null) &&
+  //     (checkPasswordError = null)
+  //   ) {
+  //     console.log("focus");
+  //   }
+  // };
 
   const getState = () => {
     return {
@@ -112,6 +127,7 @@ export default function Form() {
 
         <button
           onClick={onSubmit}
+          ref={submitButtonRef}
           disabled={
             !!(
               emailErorr ||
