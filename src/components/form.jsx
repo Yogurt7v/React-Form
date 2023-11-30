@@ -25,8 +25,6 @@ export default function Form() {
       !/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g.test(target.value)
     ) {
       newError = "Допустимы только латинские буквы, @ и домен.";
-      // } else if (target.value.length >= 30) {
-      //   newError = "Неверный логин. Должно быть не больше 30 символов";
     }
     setEmailError(newError);
   };
@@ -67,16 +65,6 @@ export default function Form() {
     setCheckPasswordError(newError);
     submitButtonRef.current.focus();
   };
-
-  // const onButton = () => {
-  //   if (
-  //     (emailErorr = null) &&
-  //     (passwordError = null) &&
-  //     (checkPasswordError = null)
-  //   ) {
-  //     console.log("focus");
-  //   }
-  // };
 
   const getState = () => {
     return {
