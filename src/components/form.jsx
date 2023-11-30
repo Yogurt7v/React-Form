@@ -61,9 +61,8 @@ export default function Form() {
     } else {
       setCheckPasswordError(null);
     }
-    // onButton();
     setCheckPasswordError(newError);
-    submitButtonRef.current.focus();
+    result();
   };
 
   const getState = () => {
@@ -71,6 +70,12 @@ export default function Form() {
       email,
       password,
     };
+  };
+  const result = () => {
+    if (email && password && checkPasswordError != null) {
+      console.log("FOCUS");
+      submitButtonRef.current.focus();
+    }
   };
 
   const onSubmit = (event) => {
