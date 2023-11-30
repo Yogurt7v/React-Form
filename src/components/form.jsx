@@ -62,7 +62,6 @@ export default function Form() {
     }
 
     if (target.value === password) {
-      console.log("Пароли совпадают");
       submitButtonRef.current.focus();
     }
   };
