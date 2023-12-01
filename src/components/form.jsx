@@ -63,6 +63,7 @@ export default function Form() {
 
     if (target.value === password) {
       submitButtonRef.current.focus();
+      console.log(submitButtonRef.current, "ref работает");
     }
   };
 
