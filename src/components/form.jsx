@@ -1,4 +1,4 @@
-// import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import style from "./form.module.css";
 
@@ -11,7 +11,7 @@ export default function Form() {
     default: {
       email: "",
       password: "",
-      checkPassword: false,
+      checkPassword: "",
     },
   });
 
@@ -28,6 +28,13 @@ export default function Form() {
       value: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/,
       message: "Некорректная почта",
     },
+    validate: (value) => {
+      if (value === "") {
+        return "Поле обязательно для заполнения";
+      } else {
+        return true;
+      }
+    },
   };
 
   const passwordProps = {
@@ -38,6 +45,13 @@ export default function Form() {
     maxLength: {
       value: 30,
       message: "Максимальная длина 30 символов",
+    },
+    validate: (value) => {
+      if (value === "") {
+        return "Поле обязательно для заполнения";
+      } else {
+        return true;
+      }
     },
   };
 
@@ -51,14 +65,17 @@ export default function Form() {
       message: "Максимальная длина 30 символов",
     },
     validate: (value) => {
-      let password = document.getElementsByName("password")[0].value;
-      if (value !== password) {
+      const password = document.getElementsByName("password")[0].value;
+      if (value !== password && password !== "") {
+        submitButtonRef.current.focus();
         return "Пароли не совпадают";
       } else {
         return true;
       }
     },
   };
+
+  const submitButtonRef = useRef(null);
 
   const emailError = errors.email?.message;
   const passwordError = errors.password?.message;
@@ -101,7 +118,11 @@ export default function Form() {
           <div className={style.errorLabel}>{checkPasswordError}</div>
         )}
       </label>
-      <button type="submit" disabled={!!emailError || !!passwordError}>
+      <button
+        ref={submitButtonRef}
+        type="submit"
+        disabled={!!emailError || !!passwordError || !!checkPasswordError}
+      >
         Зарегистрироваться
       </button>
     </form>
